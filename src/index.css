@@ -1,0 +1,165 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #04060f;
+  --glass: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.07);
+  --cyan: #00f5d4;
+  --purple: #9b5de5;
+  --pink: #f72585;
+  --yellow: #f9c74f;
+  --text: #eef0ff;
+  --muted: #7b849e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Animated gradient bg */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 10%, rgba(155,93,229,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 90%, rgba(0,245,212,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(247,37,133,0.05) 0%, transparent 60%);
+}
+
+/* Grain overlay */
+body::after {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+
+.section { position:relative; z-index:1; padding: 120px 0; }
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  transition: all 0.35s ease;
+}
+
+.glass:hover {
+  border-color: rgba(0,245,212,0.2);
+  box-shadow: 0 0 48px rgba(0,245,212,0.07);
+}
+
+.grad {
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.grad-animated {
+  background: linear-gradient(270deg, var(--cyan), var(--purple), var(--pink), var(--yellow), var(--cyan));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradShift 4s ease infinite;
+}
+
+@keyframes gradShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Scroll progress */
+#scroll-bar {
+  position:fixed; top:0; left:0; height:2px; z-index:9999;
+  background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+  transition: width 0.1s linear;
+}
+
+/* Custom cursor */
+#c-dot {
+  position:fixed; width:6px; height:6px; border-radius:50%;
+  background: var(--cyan); pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition: transform 0.08s ease;
+}
+#c-ring {
+  position:fixed; width:32px; height:32px; border-radius:50%;
+  border: 1px solid rgba(0,245,212,0.6); pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition: left 0.1s ease, top 0.1s ease, width 0.2s, height 0.2s;
+}
+
+/* Floating badge animation */
+@keyframes floatBadge {
+  0%,100% { transform: translateY(0px) rotate(var(--r,0deg)); }
+  50%      { transform: translateY(-8px) rotate(var(--r,0deg)); }
+}
+
+/* Photo pop-out */
+.photo-wrap {
+  position:relative;
+  width: 260px; height: 320px;
+  flex-shrink:0;
+}
+.photo-card {
+  width:100%; height:100%;
+  background: linear-gradient(135deg, rgba(155,93,229,0.3), rgba(0,245,212,0.2));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  overflow: visible;
+  position: relative;
+}
+.photo-card img {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 115%;
+  max-height: 360px;
+  object-fit: cover;
+  object-position: top;
+  filter: drop-shadow(0 -20px 40px rgba(155,93,229,0.4));
+  border-radius: 16px 16px 0 0;
+  z-index: 10;
+}
+
+/* Why hire me cards */
+.why-card {
+  position:relative; overflow:hidden;
+}
+.why-card::before {
+  content:'';
+  position:absolute; inset:0; border-radius:20px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  opacity:0; transition: opacity 0.3s;
+  z-index:0;
+}
+.why-card:hover::before { opacity:0.05; }
+
+/* Mobile */
+@media (max-width:768px) {
+  .section { padding: 80px 0; }
+  .hero-inner { flex-direction:column !important; text-align:center; }
+  .photo-wrap { width:200px; height:260px; margin:0 auto; }
+  .nav-links,.nav-hire { display:none !important; }
+  .nav-mob { display:flex !important; }
+  .skills-wrap { gap: 10px !important; }
+  .project-inner { flex-direction:column !important; }
+}
+
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius:2px; }
